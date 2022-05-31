@@ -9,7 +9,7 @@ app = Flask(__name__)
 redis_client.expire('api_data', 3600)
 
 #Use Redis to enhance secondary respond times from these end points.
-@app.route('/fetchall', methods=['GET'])
+@app.route('/', methods=['GET'])
 def fetch_from_api():
 #TO SHOW THE TIME TO GET THE DATA FROM REDIS CACHE 
     if redis_client.get("api_data"):
