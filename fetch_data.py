@@ -1,5 +1,5 @@
 import json
-from flask import Flask, render_template, jsonify
+from flask import Flask, jsonify
 import time
 import redis
 import datetime
@@ -9,7 +9,7 @@ app = Flask(__name__)
 redis_client.expire('api_data', 3600)
 
 #Use Redis to enhance secondary respond times from these end points.
-@app.route('/', methods=['GET'])
+@app.route('/fetchall', methods=['GET'])
 def fetch_from_api():
 #TO SHOW THE TIME TO GET THE DATA FROM REDIS CACHE 
     if redis_client.get("api_data"):
@@ -59,7 +59,7 @@ def divide_data():
         new_object = {x.replace(' ', ''): v for x, v in api_object.items()}
         for key, value in new_object.items():
             redis_client.hset(number, key, value)
-
+            
         #Specify a retention time for all values (Time to live)
         redis_client.expire(number, 3600)
     end = datetime.datetime.now()
